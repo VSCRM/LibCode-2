@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{b063780e-8265-47ca-8dac-5a5b50ea3797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface\Abstract Factory">
+      <UniqueIdentifier>{8641e0f8-f857-4888-8a5b-e4230b039fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface\Factory Method">
+      <UniqueIdentifier>{a7546287-13cf-4606-a91c-cce845e2afd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface\Facade">
+      <UniqueIdentifier>{5731612a-afa8-4f2b-81ac-c1c5db1a5230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface\Functional">
+      <UniqueIdentifier>{114800e6-d208-45a0-8065-9e5a1daa6de0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header">
+      <UniqueIdentifier>{caf62b09-8932-4e9c-b3df-3d954a8cd34b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header\Factory Method realization">
+      <UniqueIdentifier>{2819e89c-fdfa-46a1-89d6-1291644dc9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header\Functional realization">
+      <UniqueIdentifier>{5a7d306a-fa16-4e4c-95ba-1044e520d800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Abstract Factory">
+      <UniqueIdentifier>{e097e2f9-1f36-4d0c-884d-a4932080c4be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Facade Method">
+      <UniqueIdentifier>{4bf1210c-c395-41bb-ae45-78e6851a1956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Factory Method">
+      <UniqueIdentifier>{de6a3ba4-abf5-4bf9-9b84-c11ec903fe47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Functional">
+      <UniqueIdentifier>{d521079b-d9e8-4a35-b39b-29f83bf9ec08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header\Decorator realization">
+      <UniqueIdentifier>{d9354563-3868-446e-82b0-a519ee3b6f82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Decorator">
+      <UniqueIdentifier>{f7f425f1-34b9-4f5e-8d24-fbfdddbe1866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header\Abstract Factory realization">
+      <UniqueIdentifier>{af07bdbc-0489-498d-80cf-bf5884c5f5e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header\Facade Method realization">
+      <UniqueIdentifier>{fecf5204-dcd7-42e7-a622-3269c32701aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header\Proxy realization">
+      <UniqueIdentifier>{5855538f-bacd-493b-94f5-1d57f8e2c581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Proxy">
+      <UniqueIdentifier>{aa71afa3-fc15-4de3-a19e-dd1def5efe4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Singleton">
+      <UniqueIdentifier>{496af3e7-e9ff-4acf-93e6-038d117166b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simple Header\Singleton method realization">
+      <UniqueIdentifier>{4dfa71bb-3070-4976-88bb-d403d2a58357}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PostgresConnect.cpp">
+      <Filter>Source Files\Abstract Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="PostgresOutput.cpp">
+      <Filter>Source Files\Abstract Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationCoordinator.cpp">
+      <Filter>Source Files\Facade Method</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultAdapter.cpp">
+      <Filter>Source Files\Facade Method</Filter>
+    </ClCompile>
+    <ClCompile Include="AdminMenu.cpp">
+      <Filter>Source Files\Factory Method</Filter>
+    </ClCompile>
+    <ClCompile Include="LibrarianMenu.cpp">
+      <Filter>Source Files\Factory Method</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuCreator.cpp">
+      <Filter>Source Files\Factory Method</Filter>
+    </ClCompile>
+    <ClCompile Include="Authorization.cpp">
+      <Filter>Source Files\Functional</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleUtils.cpp">
+      <Filter>Source Files\Functional</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtendFeatures.cpp">
+      <Filter>Source Files\Functional</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFeatures.cpp">
+      <Filter>Source Files\Functional</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Functional</Filter>
+    </ClCompile>
+    <ClCompile Include="IConsoleUtils.h">
+      <Filter>Header Files\Interface\Functional</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleUtilsDecorator.cpp">
+      <Filter>Source Files\Decorator</Filter>
+    </ClCompile>
+    <ClCompile Include="AuthorizationProxy.cpp">
+      <Filter>Source Files\Proxy</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files\Singleton</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IDBConnect.h">
+      <Filter>Header Files\Interface\Abstract Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="IDBOutput.h">
+      <Filter>Header Files\Interface\Abstract Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="IMenu.h">
+      <Filter>Header Files\Interface\Factory Method</Filter>
+    </ClInclude>
+    <ClInclude Include="IMenuCreator.h">
+      <Filter>Header Files\Interface\Factory Method</Filter>
+    </ClInclude>
+    <ClInclude Include="IApplicationCoordinator.h">
+      <Filter>Header Files\Interface\Facade</Filter>
+    </ClInclude>
+    <ClInclude Include="PostgresOutput.h">
+      <Filter>Header Files\Simple Header\Abstract Factory realization</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationCoordinator.h">
+      <Filter>Header Files\Simple Header\Facade Method realization</Filter>
+    </ClInclude>
+    <ClInclude Include="Authorization.h">
+      <Filter>Header Files\Simple Header\Functional realization</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFeatures.h">
+      <Filter>Header Files\Simple Header\Functional realization</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtendFeatures.h">
+      <Filter>Header Files\Simple Header\Functional realization</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleUtils.h">
+      <Filter>Header Files\Simple Header\Functional realization</Filter>
+    </ClInclude>
+    <ClInclude Include="IAuthorization.h">
+      <Filter>Header Files\Interface\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="IAddOperations.h">
+      <Filter>Header Files\Interface\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="IBaseOperations.h">
+      <Filter>Header Files\Interface\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="LibrarianMenu.h">
+      <Filter>Header Files\Simple Header\Factory Method realization</Filter>
+    </ClInclude>
+    <ClInclude Include="AdminMenu.h">
+      <Filter>Header Files\Simple Header\Factory Method realization</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuCreator.h">
+      <Filter>Header Files\Simple Header\Factory Method realization</Filter>
+    </ClInclude>
+    <ClInclude Include="IDBFactory.h">
+      <Filter>Header Files\Interface\Abstract Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="PostgresFactory.h">
+      <Filter>Header Files\Simple Header\Abstract Factory realization</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultAdapter.h">
+      <Filter>Header Files\Simple Header\Facade Method realization</Filter>
+    </ClInclude>
+    <ClInclude Include="PostgresConnect.h">
+      <Filter>Header Files\Simple Header\Abstract Factory realization</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleUtilsDecorator.h">
+      <Filter>Header Files\Simple Header\Decorator realization</Filter>
+    </ClInclude>
+    <ClInclude Include="AuthorizationProxy.h">
+      <Filter>Header Files\Simple Header\Proxy realization</Filter>
+    </ClInclude>
+    <ClInclude Include="IUserContext.h">
+      <Filter>Header Files\Interface\Functional</Filter>
+    </ClInclude>
+    <ClInclude Include="UserContext.h">
+      <Filter>Header Files\Simple Header\Functional realization</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Header Files\Simple Header\Singleton method realization</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
