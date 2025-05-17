@@ -73,6 +73,12 @@
     <Filter Include="Header Files\Simple Header\Singleton method realization">
       <UniqueIdentifier>{4dfa71bb-3070-4976-88bb-d403d2a58357}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Simple Header\Adapter">
+      <UniqueIdentifier>{5f60b112-3207-4596-a91f-39c9e534247d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Adapter">
+      <UniqueIdentifier>{7e3dd86b-9db1-43e2-8664-569a95552014}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PostgresConnect.cpp">
@@ -82,9 +88,6 @@
       <Filter>Source Files\Abstract Factory</Filter>
     </ClCompile>
     <ClCompile Include="ApplicationCoordinator.cpp">
-      <Filter>Source Files\Facade Method</Filter>
-    </ClCompile>
-    <ClCompile Include="ResultAdapter.cpp">
       <Filter>Source Files\Facade Method</Filter>
     </ClCompile>
     <ClCompile Include="AdminMenu.cpp">
@@ -122,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files\Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultAdapter.cpp">
+      <Filter>Source Files\Adapter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +188,6 @@
     <ClInclude Include="PostgresFactory.h">
       <Filter>Header Files\Simple Header\Abstract Factory realization</Filter>
     </ClInclude>
-    <ClInclude Include="ResultAdapter.h">
-      <Filter>Header Files\Simple Header\Facade Method realization</Filter>
-    </ClInclude>
     <ClInclude Include="PostgresConnect.h">
       <Filter>Header Files\Simple Header\Abstract Factory realization</Filter>
     </ClInclude>
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Header Files\Simple Header\Singleton method realization</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultAdapter.h">
+      <Filter>Header Files\Simple Header\Adapter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
