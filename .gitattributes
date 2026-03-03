@@ -1,0 +1,17 @@
+# Автоматично визначати текстові файли та нормалізувати закінчення рядків
+* text=auto
+
+# Явно вказати, що всі файли коду повинні мати закінчення LF (як ти налаштовував раніше)
+*.cpp text eol=lf
+*.h text eol=lf
+*.hpp text eol=lf
+
+# Файли проекту Visual Studio завжди мають бути CRLF (це важливо для MSVC)
+*.sln text eol=crlf
+*.vcxproj text eol=crlf
+*.filters text eol=crlf
+
+# Бінарні файли (зображення, іконки) не чіпати
+*.png binary
+*.jpg binary
+*.ico binary

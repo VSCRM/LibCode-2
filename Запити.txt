@@ -1,0 +1,105 @@
+-- Це запит для всієї інформації про книги
+SELECT
+	BOOKS.ID,
+	BOOKS.TITLE,
+	AUTHORS.NAME AS AUTHOR,
+	BOOK_DETAILS.GENRE,
+	BOOK_DETAILS.PUBLISHER,
+	BOOK_DETAILS.YEAR,
+	BOOK_DETAILS.ISBN
+FROM
+	BOOKS
+	JOIN BOOK_DETAILS ON BOOKS.ID = BOOK_DETAILS.BOOK_ID
+	JOIN BOOK_AUTHORS ON BOOKS.ID = BOOK_AUTHORS.BOOK_ID
+	JOIN AUTHORS ON BOOK_AUTHORS.AUTHOR_ID = AUTHORS.ID
+ORDER BY
+	ID;
+
+
+
+-- Це запит для всієї інформації про читачів
+SELECT 
+	 readers.id 
+    ,readers.name 
+	,readers.address 
+	,readers.phone
+	,categories.category_type
+	,category_details.institution_name
+	,category_details.major 
+	,category_details.school_number
+	,category_details.kindergarten_name
+	,category_details.research_field
+FROM readers
+JOIN category_details ON  readers.id = category_details.reader_id
+JOIN categories ON category_details.category_id = categories.id
+ORDER BY id;
+
+
+
+-- Це запит для всієї інформації про відвідування
+SELECT 
+     readers.name 
+    ,BOOKS.TITLE
+	,visits.visit_time
+	,libraries.name
+FROM visits
+JOIN readers ON visits.reader_id = readers.id
+JOIN libraries ON visits.library_id = libraries.id
+JOIN books ON visits.book_id = books.id;
+
+
+
+-- Це запит для найпопулярнішої книги
+SELECT
+    books.title,
+    COUNT(*) AS given_count
+FROM
+    visits
+JOIN books ON visits.book_id = books.id
+GROUP BY
+    books.id, books.title
+ORDER BY
+    given_count DESC;
+
+
+
+-- Це запит для всієї інформації про бібліотекарів
+SELECT 
+	librarians.id 
+    ,librarians.name 
+	,libraries.name AS work_place
+	,libraries.location
+	,work_schedule.start_day
+	,work_schedule.end_day
+	,work_schedule.start_time
+	,work_schedule.end_time
+FROM librarians
+JOIN work_schedule ON librarians.id = work_schedule.worker_id
+JOIN libraries ON libraries.id = work_schedule.library_id
+ORDER BY id;
+
+
+
+-- Це запит для всієї інформації про бібліотеки
+SELECT
+	*
+FROM libraries;
+
+
+
+-- Для отримання типу ролі
+SELECT 
+	role
+FROM users
+WHERE login = 'vasyl.hrechka'
+ORDER BY id;
+
+
+
+-- Для отримання логіна і пароля і перевірки їх (логін - login, пароль - password)
+SELECT 
+	login
+	,password
+FROM users
+WHERE login = 'vasyl.hrechka'
+ORDER BY id;
