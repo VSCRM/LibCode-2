@@ -6,37 +6,65 @@
 
 /**
  * \class ConsoleUtils
- * \brief Клас для відображення графічного інтерфейсу в консолі.
+ * \brief Renders the console UI (ftxui-based implementation).
  *
- * Забезпечує консольне виведення вікна авторизації та меню.
+ * Provides console rendering of the login window, the menu window and the
+ * data-entry forms.
  */
 class ConsoleUtils : public IConsoleUtils {
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор за замовчуванням.
+     * \brief Default constructor.
      */
     ConsoleUtils();
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Деструктор за замовчуванням.
+     * \brief Default destructor.
      */
     virtual ~ConsoleUtils();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Відображає вікно авторизації в консолі.
-     * \return Пара з логіна і пароля, введених користувачем.
+     * \brief Displays the login window in the console.
+     * \param exitRequested Set to true if the user asked to exit the app.
+     * \return The login/password pair entered by the user.
      */
-    virtual std::pair<std::string, std::string> showLoginWindow() override;
+    virtual std::pair<std::string, std::string> showLoginWindow(bool& exitRequested) override;
     /**
-     * \brief Відображає меню з варіантами вибору в консолі.
-     * \param entries Список пунктів меню.
-     * \return Індекс вибраного пункту (починаючи з 1).
+     * \brief Displays a selectable menu in the console.
+     * \param entries List of menu entries.
+     * \return Index of the chosen entry.
      */
     virtual int showMenuWindow(const std::vector<std::string>& entries) override;
+    /**
+     * \brief Displays the "add new user" input form.
+     * \param libraryNames Existing library names to choose from (librarian role only).
+     * \return The entered new-user data, or a cancelled result.
+     */
+    virtual NewUserInput showAddUserWindow(const std::vector<std::string>& libraryNames) override;
+    /**
+     * \brief Displays the "add new book" input form.
+     * \return The entered new-book data, or a cancelled result.
+     */
+    virtual NewBookInput showAddBookWindow() override;
+    /**
+     * \brief Displays the "add new reader" input form.
+     * \return The entered new-reader data, or a cancelled result.
+     */
+    virtual NewReaderInput showAddReaderWindow() override;
+    /**
+     * \brief Displays the "add new visit" input form.
+     * \param readerNames Existing reader names to choose from.
+     * \param libraryNames Existing library names to choose from.
+     * \param bookTitles Existing book titles to choose from.
+     * \return The entered new-visit data, or a cancelled result.
+     */
+    virtual NewVisitInput showAddVisitWindow(const std::vector<std::string>& readerNames,
+        const std::vector<std::string>& libraryNames,
+        const std::vector<std::string>& bookTitles) override;
 #pragma endregion
 };

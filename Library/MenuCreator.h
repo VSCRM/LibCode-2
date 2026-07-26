@@ -4,45 +4,51 @@
 #include "AdminMenu.h"
 #include "LibrarianMenu.h"
 #include "IDBConnect.h"
+#include "IConsoleUtils.h"
 
 /**
  * \class MenuCreator
- * \brief Конкретна фабрика для створення меню відповідно до ролі.
+ * \brief Concrete factory that creates the appropriate menu for a role.
  */
 class MenuCreator : public IMenuCreator {
 private:
 #pragma region Fields
     /**
-     * \brief Вказівник на підключення до бази даних.
+     * \brief Database connection.
      */
     std::shared_ptr<IDBConnect> dbConnect;
+    /**
+     * \brief Console UI, forwarded to menus that need to collect input
+     *        (e.g. AdminMenu's "add user" form).
+     */
+    std::shared_ptr<IConsoleUtils> consoleUtils;
 #pragma endregion
 
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор фабрики меню.
-     * \param dbConnect Підключення до бази даних.
+     * \brief Constructs the menu factory.
+     * \param dbConnect Database connection.
+     * \param consoleUtils Console UI passed on to created menus.
      */
-    explicit MenuCreator(std::shared_ptr<IDBConnect> dbConnect);
+    MenuCreator(std::shared_ptr<IDBConnect> dbConnect, std::shared_ptr<IConsoleUtils> consoleUtils);
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Деструктор.
-     *
-     * Очищує ресурси, пов’язані з фабрикою меню.
+     * \brief Destructor.
      */
     virtual ~MenuCreator();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Створює об'єкт меню для конкретної ролі користувача.
+     * \brief Creates the menu object for a given user role.
      *
-     * \param role Роль користувача (наприклад, "admin" або "librarian").
-     * \return Вказівник на об'єкт меню, що відповідає ролі.
+     * \param role User role (e.g. "admin" or "librarian").
+     * \return A smart pointer to the menu matching the role, or nullptr if
+     *         the role is unknown.
      */
-    virtual IMenu* createMenu(const std::string& role) const override;
+    virtual std::unique_ptr<IMenu> createMenu(const std::string& role) const override;
 #pragma endregion
 };

@@ -1,22 +1,18 @@
 #include "ResultAdapter.h"
 #include "Logger.h"
 
-#pragma region Static object
-static PostgresOutput staticOutput;
-#pragma endregion
-
 #pragma region Destructor
 ResultAdapter::~ResultAdapter() {
-    Logger::getInstance().log("[ResultAdapter] очищення кешу");
+    Logger::getInstance().log("[ResultAdapter] Cache cleared");
 }
 #pragma endregion
 
 #pragma region Methods
-PostgresOutput& ResultAdapter::convert(const pqxx::result& result) {
-    staticOutput.clear();
+PostgresOutput ResultAdapter::convert(const pqxx::result& result) {
+    PostgresOutput output;
 
     for (int i = 0; i < result.columns(); ++i) {
-        staticOutput.addColumnHeader(result.column_name(i));
+        output.addColumnHeader(result.column_name(i));
     }
 
     for (const auto& row : result) {
@@ -24,9 +20,9 @@ PostgresOutput& ResultAdapter::convert(const pqxx::result& result) {
         for (int i = 0; i < result.columns(); ++i) {
             rowData.push_back(row[i].is_null() ? "NULL" : row[i].as<std::string>());
         }
-        staticOutput.addRow(rowData);
+        output.addRow(rowData);
     }
 
-    return staticOutput;
+    return output;
 }
 #pragma endregion

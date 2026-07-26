@@ -5,6 +5,8 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>
+#include <stdexcept>
+#include <utility>
 
 #pragma region Constructor
 Authorization::Authorization(std::shared_ptr<IDBConnect> dbConnect)
@@ -14,12 +16,12 @@ Authorization::Authorization(std::shared_ptr<IDBConnect> dbConnect)
 
 #pragma region Destructor
 Authorization::~Authorization() {
-    Logger::getInstance().log("[Authorization] Деструктор викликано.");
+    Logger::getInstance().log("[Authorization] Destructor called.");
 }
 #pragma endregion
 
 #pragma region Methods
-void logToFile(const std::string& message) {
+static void logToFile(const std::string& message) {
     std::ofstream logFile("log.txt", std::ios::app);
     if (logFile.is_open()) {
         auto now = std::chrono::system_clock::now();
@@ -29,9 +31,16 @@ void logToFile(const std::string& message) {
 }
 
 bool Authorization::authorize(const std::string& username, const std::string& password) {
+    // Reject an empty username up front instead of silently sending an
+    // empty-string query to the database on every keystroke-less submit.
+    if (username.empty()) {
+        logToFile("Authorization attempt rejected: empty username.");
+        return false;
+    }
+
     try {
         auto pgConn = dynamic_cast<PostgresConnect*>(dbConnect.get());
-        if (!pgConn) throw std::runtime_error("Невірний тип з'єднання в authorize");
+        if (!pgConn) throw std::runtime_error("Unsupported connection type in authorize");
 
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -44,25 +53,30 @@ bool Authorization::authorize(const std::string& username, const std::string& pa
             if (dbPassword == password) {
                 auto end = std::chrono::high_resolution_clock::now();
                 std::chrono::duration<double> duration = end - start;
-                logToFile("Авторизація користувача:" + username + ". Успішна, затрачений час: " + std::to_string(duration.count()) + "секунд.");
+                logToFile("Authorization for user: " + username + ". Successful, time taken: " + std::to_string(duration.count()) + " seconds.");
                 return true;
             }
         }
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = end - start;
-        logToFile("Авторизація користувача:" + username + ".  НЕ Успішна, затрачений час: " + std::to_string(duration.count()) + "секунд.");
+        logToFile("Authorization for user: " + username + ". NOT successful, time taken: " + std::to_string(duration.count()) + " seconds.");
     }
     catch (const std::exception& e) {
-        logToFile("Помилка авторизації: " + std::string(e.what()));
+        logToFile("Authorization error: " + std::string(e.what()));
     }
     return false;
 }
 
 std::string Authorization::getUserRole(const std::string& username) {
+    if (username.empty()) {
+        logToFile("Get-role request rejected: empty username.");
+        return "";
+    }
+
     try {
         auto pgConn = dynamic_cast<PostgresConnect*>(dbConnect.get());
-        if (!pgConn) throw std::runtime_error("Невірний тип з'єднання в getUserRole");
+        if (!pgConn) throw std::runtime_error("Unsupported connection type in getUserRole");
 
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -73,16 +87,16 @@ std::string Authorization::getUserRole(const std::string& username) {
         if (res.size() == 1) {
             auto end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> duration = end - start;
-            logToFile("Отримання ролі користувача:" + username + ". Затрачений час: " + std::to_string(duration.count()) + "секунд.");
+            logToFile("Get role for user: " + username + ". Time taken: " + std::to_string(duration.count()) + " seconds.");
             return res[0]["role"].as<std::string>();
         }
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = end - start;
-        logToFile("Отримання ролі користувача:" + username + ". Затрачений час: " + std::to_string(duration.count()) + "секунд.");
+        logToFile("Get role for user: " + username + ". Time taken: " + std::to_string(duration.count()) + " seconds.");
     }
     catch (const std::exception& e) {
-        logToFile("Помилка отримання ролі користувача: " + std::string(e.what()));
+        logToFile("Get-role error: " + std::string(e.what()));
     }
     return "";
 }

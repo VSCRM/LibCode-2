@@ -5,33 +5,35 @@
 
 /**
  * \interface IMenu
- * \brief Інтерфейс для консольного меню користувача.
+ * \brief Interface for a console user menu.
  *
- * Визначає базові дії для роботи з меню.
+ * Defines the basic operations for working with a menu.
  */
 class IMenu {
 public:
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Дозволяє коректно знищувати об'єкти похідних класів через вказівник на базовий.
+     * Allows derived-class objects to be destroyed correctly through a
+     * pointer to the base class.
      */
     virtual ~IMenu() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Обробляє вибір користувача в меню.
+     * \brief Handles the user's menu selection.
      *
-     * \param selected Індекс обраного пункту меню.
-     * \return true, якщо вибір оброблено успішно; інакше — false.
+     * \param selected Index of the chosen menu entry.
+     * \return true if the selection was handled successfully; false
+     *         otherwise.
      */
     virtual bool handleSelection(int selected) = 0;
     /**
-     * \brief Повертає список пунктів меню.
+     * \brief Returns the list of menu entries.
      *
-     * \return Вектор рядків, де кожен рядок — назва пункту меню.
+     * \return A vector of strings, where each string is a menu entry label.
      */
     virtual std::vector<std::string> getEntries() const = 0;
 #pragma endregion

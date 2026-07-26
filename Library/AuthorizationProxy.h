@@ -8,16 +8,16 @@
 
 /**
  * \class AuthorizationProxy
- * \brief Проксі для класу Authorization з обмеженням доступу за часом.
+ * \brief Proxy for Authorization that adds a time-of-day access restriction.
  *
- * Дозволяє авторизацію лише у визначені години доби (з 07:00 до 16:00),
- * делегуючи виклики реальному об’єкту Authorization.
+ * Only allows authorization during a specific window (07:00-16:00),
+ * delegating the actual work to the wrapped Authorization object.
  */
 class AuthorizationProxy : public IAuthorization {
 private:
 #pragma region Field
    /**
-    * \brief Вказівник на реальний об’єкт авторизації.
+    * \brief The wrapped real authorization object.
     */
     std::unique_ptr<Authorization> realAuthorization;
 #pragma endregion
@@ -25,31 +25,32 @@ private:
 public:
 #pragma region Constructor
    /**
-    * \brief Конструктор з передачею підключення до БД.
-    * \param dbConnect Підключення до бази даних.
+    * \brief Constructs AuthorizationProxy.
+    * \param dbConnect Database connection.
     */
     explicit AuthorizationProxy(std::shared_ptr<IDBConnect> dbConnect);
 #pragma endregion
 
 #pragma region Destructor
    /**
-    * \brief Віртуальний деструктор.
+    * \brief Virtual destructor.
     */
     virtual ~AuthorizationProxy();
 #pragma endregion
 
 #pragma region Metods
    /**
-    * \brief Авторизація з перевіркою дозволеного часу.
-    * \param username Логін користувача.
-    * \param password Пароль користувача.
-    * \return true, якщо авторизація успішна та в дозволений час, інакше false.
+    * \brief Authorizes a user, gated by the allowed time window.
+    * \param username User's login.
+    * \param password User's password.
+    * \return true if authorization succeeded and the current time is
+    *         within the allowed window; false otherwise.
     */
     virtual bool authorize(const std::string& username, const std::string& password) override;
    /**
-    * \brief Отримати роль користувача.
-    * \param username Логін користувача.
-    * \return Роль користувача.
+    * \brief Gets a user's role.
+    * \param username User's login.
+    * \return The user's role.
     */
     virtual std::string getUserRole(const std::string& username) override;
 #pragma endregion

@@ -10,37 +10,37 @@
 
 /**
  * \class ApplicationCoordinator
- * \brief Клас, що реалізує інтерфейс IApplicationCoordinator і керує запуском системи, авторизацією та навігацією між меню.
+ * \brief Implements IApplicationCoordinator, driving startup, authorization,
+ *        and navigation between menus.
  *
- * Клас координує основну логіку додатку, включаючи авторизацію та створення меню для користувача.
+ * Coordinates the application's main logic, including authorization and
+ * building the menu for the current user.
  */
 class ApplicationCoordinator : public IApplicationCoordinator {
 private:
 #pragma region Fields
     /**
-     * \brief Об'єкт для авторизації користувачів.
+     * \brief Handles user authorization.
      */
     std::shared_ptr<IAuthorization> authorization;
     /**
-     * \brief Об'єкт для зберігання даних про авторизованого користувача.
+     * \brief Holds data about the currently authorized user.
      */
     std::shared_ptr<IUserContext> userContext;
     /**
-     * \brief Об'єкт для створення відповідного меню користувача.
+     * \brief Builds the menu matching the current user.
      */
     std::shared_ptr<IMenuCreator> menuCreator;
     /**
-     * \brief Об'єкт для створення підключення до БД.
+     * \brief Creates the database connection.
      */
     std::shared_ptr<IDBFactory> dbFactory;
     /**
-     * \brief Об'єкт для зберігання з'єднання з БД.
+     * \brief Holds the current database connection.
      */
     std::shared_ptr<IDBConnect> dbConnect;
     /**
-     * \brief Об'єкт класу ConsoleUtils для роботи з консольним інтерфейсом.
-     *
-     * Використовується для візуального представлення системи.
+     * \brief Console UI used to render the application.
      */
     std::shared_ptr<IConsoleUtils> consoleUtils;
 #pragma endregion
@@ -48,11 +48,12 @@ private:
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор класу ApplicationCoordinator.
-     * \param authorization Вказівник на об'єкт для авторизації користувачів.
-     * \param userContext Вказівник на об'єкт для зберігання інформації про авторизованого користувача.
-     * \param menuCreator Вказівник на об'єкт для створення меню користувача.
-     * \param dbFactory Вказівник на об'єкт для створення підключення до БД.
+     * \brief Constructs ApplicationCoordinator.
+     * \param authorization Handles user authorization.
+     * \param userContext Holds data about the currently authorized user.
+     * \param menuCreator Builds the menu matching the current user.
+     * \param dbFactory Creates the database connection.
+     * \param consoleUtils Console UI used to render the application.
      */
     ApplicationCoordinator(
         std::shared_ptr<IAuthorization> authorization,
@@ -65,44 +66,45 @@ public:
 
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Закриває всі відкриті файли та звільняє ресурси.
+     * Closes any open resources and releases them.
      */
     virtual ~ApplicationCoordinator();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Ініціалізує програму.
+     * \brief Initializes the application.
      *
-     * Стартує основну логіку додатку, наприклад, викликає авторизацію.
+     * Starts the application's main logic, e.g. drives authorization.
      */
     virtual void initialize() override;
     /**
-     * \brief Керує процесом авторизації користувача.
+     * \brief Drives the user authorization process.
      *
-     * Якщо авторизація пройшла успішно, створює відповідне меню для користувача.
+     * If authorization succeeds, builds and shows the matching menu.
+     *
+     * \return true if the application should keep running; false if the
+     *         user asked to exit.
      */
-    virtual void handleAuthorization() override;
+    virtual bool handleAuthorization() override;
     /**
-     * \brief Показує меню користувача після авторизації.
+     * \brief Shows the user's menu after authorization.
      *
-     * Створює та показує відповідне меню на основі ролі користувача.
+     * Builds and displays the menu matching the user's role.
      *
-     * \return true, якщо меню успішно відображено, інакше false.
+     * \return true if the menu was shown successfully; false otherwise.
      */
     virtual bool displayMenu() override;
     /**
-     * \brief Очищає консоль.
-     *
-     * Використовує спеціальні засоби для очищення вікна консолі.
+     * \brief Clears the console.
      */
     virtual void clearConsole();
     /**
-     * \brief Очищає лог-файл.
+     * \brief Clears the log file.
      *
-     * Видаляє всі дані з файлу логу.
+     * Removes all data from the log file.
      */
     virtual void clearLogFile();
 #pragma endregion

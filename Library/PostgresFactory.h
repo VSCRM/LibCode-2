@@ -6,15 +6,15 @@
 
 /**
  * \class PostgresFactory
- * \brief Конкретна фабрика для створення PostgreSQL-підключень та об'єктів виводу.
+ * \brief Concrete factory that creates PostgreSQL connections and output objects.
  *
- * Реалізує інтерфейс IDBFactory для створення екземплярів класів, що працюють з PostgreSQL.
+ * Implements IDBFactory to build instances of the PostgreSQL-backed classes.
  */
 class PostgresFactory : public IDBFactory {
 #pragma region Fields
 private:
     /**
-     * \brief Рядок підключення до бази даних PostgreSQL.
+     * \brief PostgreSQL connection string.
      */
     std::string connectionString;
 #pragma endregion
@@ -22,31 +22,31 @@ private:
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор з параметром.
-     * \param connStr Рядок підключення до бази даних PostgreSQL.
+     * \brief Constructor.
+     * \param connStr PostgreSQL connection string.
      */
     explicit PostgresFactory(const std::string& connStr) : connectionString(connStr) {}
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      */
     virtual ~PostgresFactory() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Створює з'єднання з базою даних PostgreSQL.
-     * \return Розумний вказівник на об'єкт, що реалізує IDBConnect.
+     * \brief Creates a PostgreSQL database connection.
+     * \return A smart pointer to an object implementing IDBConnect.
      */
     virtual std::shared_ptr<IDBConnect> createConnection() override {
         auto connection = std::make_shared<PostgresConnect>(connectionString);
         return connection;
     }
     /**
-     * \brief Створює об'єкт для виводу даних у файл.
-     * \return Розумний вказівник на об'єкт, що реалізує IDBOutput.
+     * \brief Creates an object for writing output to a file.
+     * \return A smart pointer to an object implementing IDBOutput.
      */
     virtual std::shared_ptr<IDBOutput> createOutput() override {
         return std::make_shared<PostgresOutput>();

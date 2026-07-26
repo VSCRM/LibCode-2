@@ -4,39 +4,41 @@
 
 /**
  * \interface IAuthorization
- * \brief Інтерфейс для авторизації користувачів.
+ * \brief Interface for user authorization.
  *
- * Визначає методи для перевірки даних користувача та отримання ролі.
+ * Defines the operations used to verify user credentials and get a role.
  */
 class IAuthorization {
 public:
 #pragma region Destructor
     /**
-     * \brief Деструктор.
+     * \brief Destructor.
      *
-     * Віртуальний деструктор для забезпечення коректного знищення похідних класів через вказівник на базовий клас.
+     * Virtual, to ensure derived classes are destroyed correctly through a
+     * pointer to this base class.
      */
     virtual ~IAuthorization() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Авторизація користувача.
+     * \brief Authorizes a user.
      *
-     * Перевіряє дані користувача та здійснює авторизацію, якщо введені правильні логін та пароль.
+     * Verifies the user's credentials and authorizes them if the login and
+     * password are correct.
      *
-     * \param username Логін користувача.
-     * \param password Пароль користувача.
-     * \return true, якщо авторизація успішна, false — якщо не вдалося авторизувати.
+     * \param username User's login.
+     * \param password User's password.
+     * \return true if authorization succeeded, false otherwise.
      */
     virtual bool authorize(const std::string& username, const std::string& password) = 0;
     /**
-     * \brief Отримати тип ролі користувача.
+     * \brief Gets the user's role.
      *
-     * Повертає роль користувача, яка зберігається в базі даних.
+     * Returns the role stored for the user in the database.
      *
-     * \param role Роль користувача (наприклад, "адміністратор" або "бібліотекар").
-     * \return Роль користувача.
+     * \param role User's login (parameter name kept for source compatibility).
+     * \return The user's role.
      */
     virtual std::string getUserRole(const std::string& role) = 0;
 #pragma endregion

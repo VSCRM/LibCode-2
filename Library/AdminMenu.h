@@ -2,51 +2,55 @@
 
 #include "IMenu.h"
 #include "IDBConnect.h"
+#include "IConsoleUtils.h"
 #include <memory>
 
 /**
  * \class AdminMenu
- * \brief Меню адміністратора.
+ * \brief Administrator menu.
  *
- * Реалізує розширене меню з додатковими можливостями для адміністратора.
+ * Implements the extended menu with administrator-only capabilities.
  */
 class AdminMenu : public IMenu {
 private:
 #pragma region Fields
     /**
-     * \brief Вказівник на об'єкт для підключення до бази даних.
+     * \brief Database connection.
      */
     std::shared_ptr<IDBConnect> dbConnect;
+    /**
+     * \brief Console UI, used to collect input for the "add user" form.
+     */
+    std::shared_ptr<IConsoleUtils> consoleUtils;
 #pragma endregion
 
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор з параметром.
-     * \param dbConnect Вказівник на підключення до бази даних.
+     * \brief Constructs AdminMenu.
+     * \param dbConnect Database connection.
+     * \param consoleUtils Console UI used for the "add user" input form.
      */
-    explicit AdminMenu(std::shared_ptr<IDBConnect> dbConnect);
+    AdminMenu(std::shared_ptr<IDBConnect> dbConnect, std::shared_ptr<IConsoleUtils> consoleUtils);
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Деструктор.
-     *
-     * Використовується для завершення роботи меню адміністратора.
+     * \brief Destructor.
      */
     virtual ~AdminMenu();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Повертає список пунктів меню для адміністратора.
-     * \return Вектор рядків з назвами пунктів меню.
+     * \brief Returns the list of admin menu entries.
+     * \return Vector of menu entry labels.
      */
     virtual std::vector<std::string> getEntries() const override;
     /**
-     * \brief Обробляє вибір користувача.
-     * \param selected Номер обраного пункту меню.
-     * \return true, якщо меню слід повторити; false — якщо вийти.
+     * \brief Handles the user's menu selection.
+     * \param selected Index of the chosen menu entry.
+     * \return true if the menu should be shown again; false to exit.
      */
     virtual bool handleSelection(int selected) override;
 #pragma endregion

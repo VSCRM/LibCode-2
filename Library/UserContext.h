@@ -5,20 +5,20 @@
 
 /**
  * \class UserContext
- * \brief Клас, що реалізує інтерфейс IUserContext та зберігає дані про користувача.
+ * \brief Implements IUserContext and stores data about the current user.
  *
- * Цей клас відповідає за збереження інформації про користувача, зокрема його ім'я та роль.
- * Він реалізує методи доступу до цих даних згідно з інтерфейсним контрактом IUserContext.
+ * Holds the user's name and role, and exposes them through the
+ * IUserContext interface contract.
  */
 class UserContext : public IUserContext {
 private:
 #pragma region Fields
     /**
-     * \brief Ім'я користувача.
+     * \brief The user's name.
      */
     std::string username;
     /**
-     * \brief Роль користувача.
+     * \brief The user's role.
      */
     std::string role;
 #pragma endregion
@@ -26,12 +26,12 @@ private:
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор класу UserContext.
+     * \brief Constructs UserContext.
      *
-     * Ініціалізує ім'я та роль користувача.
+     * Initializes the user's name and role.
      *
-     * \param username Ім'я користувача.
-     * \param role Роль користувача.
+     * \param username The user's name.
+     * \param role The user's role.
      */
     UserContext(const std::string& username, const std::string& role)
         : username(username), role(role) {
@@ -40,25 +40,25 @@ public:
 
 #pragma region Destructor
     /**
-     * \brief Деструктор класу UserContext.
+     * \brief Destructor.
      *
-     * Оскільки клас не містить динамічної пам'яті або специфічних ресурсів,
-     * автоматичний деструктор компілятора виконується без змін.
+     * The class holds no dynamic memory or special resources, so the
+     * compiler-generated destructor is used as-is.
      */
     virtual ~UserContext() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Отримує ім'я користувача.
+     * \brief Gets the user's name.
      *
-     * \return Ім'я користувача.
+     * \return The user's name.
      */
     virtual std::string getUsername() const override { return username; }
     /**
-     * \brief Отримує роль користувача.
+     * \brief Gets the user's role.
      *
-     * \return Роль користувача.
+     * \return The user's role.
      */
     virtual std::string getRole() const override { return role; }
 #pragma endregion

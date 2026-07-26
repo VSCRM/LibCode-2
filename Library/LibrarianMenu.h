@@ -2,51 +2,59 @@
 
 #include "IMenu.h"
 #include "IDBConnect.h"
+#include "IConsoleUtils.h"
 #include <memory>
 
 /**
  * \class LibrarianMenu
- * \brief Меню бібліотекаря.
+ * \brief Librarian menu.
  *
- * Реалізує логіку роботи з функціями бібліотекаря.
+ * Implements the librarian-facing menu logic: viewing statistics and
+ * adding books, readers, and visits.
  */
 class LibrarianMenu : public IMenu {
 private:
 #pragma region Fields
     /**
-     * \brief Вказівник на об'єкт для підключення до бази даних.
+     * \brief Database connection.
      */
     std::shared_ptr<IDBConnect> dbConnect;
+    /**
+     * \brief Console UI, used to collect input for the "add book"/"add
+     *        reader"/"add visit" forms.
+     */
+    std::shared_ptr<IConsoleUtils> consoleUtils;
 #pragma endregion
 
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор з параметром.
-     * \param dbConnect Вказівник на підключення до бази даних.
+     * \brief Constructs LibrarianMenu.
+     * \param dbConnect Database connection.
+     * \param consoleUtils Console UI used for the data-entry forms.
      */
-    explicit LibrarianMenu(std::shared_ptr<IDBConnect> dbConnect);
+    LibrarianMenu(std::shared_ptr<IDBConnect> dbConnect, std::shared_ptr<IConsoleUtils> consoleUtils);
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Деструктор.
+     * \brief Destructor.
      *
-     * Звільняє ресурси, пов’язані з меню бібліотекаря.
+     * Releases resources associated with the librarian menu.
      */
     virtual ~LibrarianMenu();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Повертає список доступних пунктів меню для бібліотекаря.
-     * \return Вектор рядків з назвами пунктів меню.
+     * \brief Returns the list of librarian menu entries.
+     * \return Vector of menu entry labels.
      */
     virtual std::vector<std::string> getEntries() const override;
     /**
-     * \brief Обробляє вибір користувача.
-     * \param selection Номер вибраного пункту.
-     * \return true, якщо слід повторити меню; false — для виходу.
+     * \brief Handles the user's menu selection.
+     * \param selection Index of the chosen menu entry.
+     * \return true if the menu should be shown again; false to exit.
      */
     virtual bool handleSelection(int selection) override;
 #pragma endregion

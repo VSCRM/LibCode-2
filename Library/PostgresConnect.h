@@ -7,24 +7,24 @@
 
 /**
  * \class PostgresConnect
- * \brief Клас для підключення до бази даних PostgreSQL.
+ * \brief Manages a PostgreSQL database connection.
  *
- * Реалізує інтерфейс IDBConnect для встановлення з'єднання, перевірки його статусу
- * та відключення. Додатково надає доступ до внутрішнього об'єкта з'єднання.
+ * Implements IDBConnect to open the connection, check its status, and
+ * close it. Also exposes the underlying pqxx::connection object.
  */
 class PostgresConnect : public IDBConnect {
 private:
 #pragma region Fields
     /**
-     * \brief Вказівник на з'єднання з PostgreSQL.
+     * \brief Pointer to the underlying PostgreSQL connection.
      */
     pqxx::connection* conn;
     /**
-     * \brief Статус підключення.
+     * \brief Whether the connection is currently open.
      */
     bool connected;
     /**
-     * \brief Рядок підключення до бази даних PostgreSQL.
+     * \brief PostgreSQL connection string.
      */
     std::string connStr;
 #pragma endregion
@@ -32,46 +32,46 @@ private:
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор класу PostgresConnect.
+     * \brief Constructs PostgresConnect.
      *
-     * Ініціалізує рядок підключення без встановлення самого з'єднання.
-     * \param connectionString Рядок підключення до PostgreSQL.
+     * Stores the connection string without opening the connection itself.
+     * \param connectionString PostgreSQL connection string.
      */
     explicit PostgresConnect(const std::string& connectionString);
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Від'єднується від бази даних та очищає ресурси.
+     * Disconnects from the database and releases resources.
      */
     virtual ~PostgresConnect();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Встановлює з'єднання з базою даних PostgreSQL.
-     * \return true, якщо з'єднання було успішним, false — у випадку помилки.
+     * \brief Opens the PostgreSQL database connection.
+     * \return true if the connection succeeded, false on error.
      */
     virtual bool connect() override;
     /**
-     * \brief Відключається від бази даних PostgreSQL.
+     * \brief Closes the PostgreSQL database connection.
      */
     virtual void disconnect() override;
     /**
-     * \brief Перевіряє, чи активне з'єднання з БД.
-     * \return true, якщо активне, інакше false.
+     * \brief Checks whether the connection is currently active.
+     * \return true if active, false otherwise.
      */
     virtual bool isConnected() const override { return connected; }
     /**
-     * \brief Повертає вказівник на внутрішнє з'єднання PostgreSQL.
-     * \return Вказівник на pqxx::connection або nullptr, якщо не підключено.
+     * \brief Returns a pointer to the underlying PostgreSQL connection.
+     * \return A pointer to pqxx::connection, or nullptr if not connected.
      */
     pqxx::connection* getConnection() { return conn; }
     /**
-     * \brief Записує повідомлення у лог-файл.
-     * \param message Повідомлення, яке буде записане.
+     * \brief Writes a message to the log file.
+     * \param message The message to write.
      */
     void logToFile(const std::string& message);
 #pragma endregion

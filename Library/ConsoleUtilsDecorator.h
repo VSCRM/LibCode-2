@@ -5,18 +5,19 @@
 
 /**
  * \class ConsoleUtilsDecorator
- * \brief Декоратор для додавання кольору до компонентів.
+ * \brief Decorator that adds color styling to the wrapped console UI.
  *
- * Цей клас дозволяє додавати кольорові стилі до вікон авторизації та меню,
- * не змінюючи їх первісну реалізацію.
+ * Lets color styles be applied to the login/menu/add-user windows without
+ * modifying their original implementation.
  */
 class ConsoleUtilsDecorator : public IConsoleUtils {
 private:
 #pragma region Fields
     /**
-     * \brief Оригінальний об'єкт, який буде декоровано.
-     * \details Це поле зберігає вказівник на оригінальний об'єкт, який реалізує інтерфейс IConsoleUtils.
-     *           Завдяки цьому поле можна розширювати функціональність без зміни початкового коду.
+     * \brief The original object being decorated.
+     * \details Holds a pointer to the wrapped IConsoleUtils implementation,
+     *          allowing behavior to be extended without touching the
+     *          original code.
      */
     std::shared_ptr<IConsoleUtils> original_;
 #pragma endregion
@@ -24,34 +25,56 @@ private:
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор.
-     * \param original Оригінальний об'єкт, який буде декоровано.
-     * \details Декоратор ініціалізує оригінальний об'єкт, на якому буде реалізовуватись додатковий функціонал.
+     * \brief Constructor.
+     * \param original The original object being decorated.
      */
     ConsoleUtilsDecorator(std::shared_ptr<IConsoleUtils> original);
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Деструктор.
-     * \details Деструктор автоматично звільняє пам'ять і викликається при завершенні роботи об'єкта.
+     * \brief Destructor.
      */
     virtual ~ConsoleUtilsDecorator();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Відображає вікно авторизації з кольором.
-     * \return Пара з логіна і пароля, введених користувачем.
-     * \details Цей метод викликає оригінальний метод і потім додає до нього кольорові стилі.
+     * \brief Displays the login window with added color styling.
+     * \return The login/password pair entered by the user.
      */
-    virtual std::pair<std::string, std::string> showLoginWindow() override;
+    virtual std::pair<std::string, std::string> showLoginWindow(bool& exitRequested) override;
     /**
-     * \brief Відображає меню з варіантами вибору з кольором.
-     * \param entries Список пунктів меню.
-     * \return Індекс вибраного пункту (починаючи з 1).
-     * \details Цей метод викликає оригінальний метод і потім додає до нього кольорові стилі.
+     * \brief Displays the menu with added color styling.
+     * \param entries List of menu entries.
+     * \return Index of the chosen entry.
      */
     virtual int showMenuWindow(const std::vector<std::string>& entries) override;
+    /**
+     * \brief Displays the "add new user" form with added color styling.
+     * \param libraryNames Existing library names to choose from (librarian role only).
+     * \return The entered new-user data, or a cancelled result.
+     */
+    virtual NewUserInput showAddUserWindow(const std::vector<std::string>& libraryNames) override;
+    /**
+     * \brief Displays the "add new book" form with added color styling.
+     * \return The entered new-book data, or a cancelled result.
+     */
+    virtual NewBookInput showAddBookWindow() override;
+    /**
+     * \brief Displays the "add new reader" form with added color styling.
+     * \return The entered new-reader data, or a cancelled result.
+     */
+    virtual NewReaderInput showAddReaderWindow() override;
+    /**
+     * \brief Displays the "add new visit" form with added color styling.
+     * \param readerNames Existing reader names to choose from.
+     * \param libraryNames Existing library names to choose from.
+     * \param bookTitles Existing book titles to choose from.
+     * \return The entered new-visit data, or a cancelled result.
+     */
+    virtual NewVisitInput showAddVisitWindow(const std::vector<std::string>& readerNames,
+        const std::vector<std::string>& libraryNames,
+        const std::vector<std::string>& bookTitles) override;
 #pragma endregion
 };

@@ -7,27 +7,16 @@
 
 /**
  * \class PostgresOutput
- * \brief Реалізація інтерфейсу IDBOutput для роботи з PostgreSQL та створення текстового файлу з даними.
+ * \brief Implements IDBOutput: formats PostgreSQL query results and writes
+ *        them to a text file.
  */
 class PostgresOutput : public IDBOutput {
 private:
 #pragma region Private Fields
     /**
-     * \brief Файл для логування.
+     * \brief Start time of the current operation.
      *
-     * Використовується для запису логів про операції з базою даних.
-     */
-    std::ofstream logFile;
-    /**
-     * \brief Файл для виведення результатів.
-     *
-     * Використовується для збереження результатів операцій у форматі текстового файлу.
-     */
-    std::ofstream outputFile;
-    /**
-     * \brief Час початку виконання операцій.
-     *
-     * Відмічає час початку операцій для логування часу виконання.
+     * Used to measure and log how long an operation took.
      */
     std::chrono::steady_clock::time_point startTime;
 #pragma endregion
@@ -35,69 +24,74 @@ private:
 public:
 #pragma region Fields
     /**
-     * \brief Вектор для заголовків стовпців.
+     * \brief Column headers.
      *
-     * Містить заголовки стовпців, які будуть виведені в файл.
+     * Holds the column headers that will be written to the file.
      */
     std::vector<std::string> headers;
     /**
-     * \brief Вектор рядків даних.
+     * \brief Buffer holding the row data.
      *
-     * Містить дані, які будуть виведені в файл.
-     */
-    std::vector<std::vector<std::string>> rows;
-    /**
-     * \brief Буфер для тимчасового зберігання даних.
-     *
-     * Використовується для накопичення даних перед записом у файл.
+     * Accumulates rows before they are written to the file.
      */
     std::vector<std::vector<std::string>> buffer;
 #pragma endregion
 
 #pragma region Constructor
     /**
-     * \brief Конструктор за замовчуванням. Ініціалізує лог-файл та заміряє час.
+     * \brief Default constructor. Starts the timing measurement.
      */
     PostgresOutput();
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Закриває всі відкриті файли та звільняє ресурси.
+     * Closes any open files and releases resources.
      */
     virtual ~PostgresOutput();
 #pragma endregion
 
 #pragma region Copy Prohibition
     /**
-     * \brief Заборона копіювання об'єкта.
+     * \brief Copying is disallowed.
      */
     PostgresOutput(const PostgresOutput&) = delete;
     /**
-     * \brief Заборона копіювального присвоєння.
+     * \brief Copy assignment is disallowed.
      */
     PostgresOutput& operator=(const PostgresOutput&) = delete;
 #pragma endregion
 
+#pragma region Move
+    /**
+     * \brief Move support (needed because ResultAdapter::convert returns
+     *        PostgresOutput by value instead of a reference to a shared
+     *        static object).
+     */
+    PostgresOutput(PostgresOutput&&) noexcept = default;
+    PostgresOutput& operator=(PostgresOutput&&) noexcept = default;
+#pragma endregion
+
 #pragma region Methods
     /**
-     * \brief Додає заголовок стовпця.
-     * \param header Заголовок стовпця.
+     * \brief Adds a column header.
+     * \param header The column header.
      */
     virtual void addColumnHeader(const std::string& header);
     /**
-     * \brief Додає рядок даних у буфер.
-     * \param row Вектор рядка.
+     * \brief Adds a data row to the buffer.
+     * \param row The row of values.
      */
     virtual void addRow(const std::vector<std::string>& row);
     /**
-     * \brief Очищає буфер та заголовки.
+     * \brief Clears the buffer and headers.
      */
     virtual void clear();
     /**
-     * \brief Виводить буфер у файл з автовирівнюванням і логуванням часу.
+     * \brief Writes the buffer to a file with automatic column alignment,
+     *        and logs how long it took.
      */
     virtual void writeToFile() override;
 #pragma endregion

@@ -2,25 +2,25 @@
 
 /**
  * \interface IDBOutput
- * \brief Інтерфейс для виводу даних з бази даних у файл з автовирівнюванням.
+ * \brief Interface for writing database results to an auto-aligned file.
  */
 class IDBOutput {
 public:
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Забезпечує коректне знищення об'єктів похідних класів.
+     * Ensures derived-class objects are destroyed correctly.
      */
     virtual ~IDBOutput() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Вивести результати SQL-запиту у файл.
+     * \brief Writes the SQL query results to a file.
      *
-     * \details Виводить раніше збережені результати запиту у файл з автовирівнюванням
-     *          для зручного подальшого перегляду.
+     * \details Writes the previously stored query results to a file, with
+     *          automatic column alignment for easy reading.
      */
     virtual void writeToFile() = 0;
 #pragma endregion

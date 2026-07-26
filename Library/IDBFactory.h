@@ -6,31 +6,31 @@
 
 /**
  * \interface IDBFactory
- * \brief Абстрактна фабрика для створення компонентів бази даних.
+ * \brief Abstract factory for creating database-related components.
  */
 class IDBFactory {
 public:
 
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Забезпечує коректне знищення об'єктів похідних класів.
+     * Ensures derived-class objects are destroyed correctly.
      */
     virtual ~IDBFactory() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Створити об'єкт підключення до бази даних.
+     * \brief Creates a database connection object.
      *
-     * \return Спільний вказівник на об'єкт, що реалізує інтерфейс IDBConnect.
+     * \return A shared pointer to an object implementing IDBConnect.
      */
     virtual std::shared_ptr<IDBConnect> createConnection() = 0;
     /**
-     * \brief Створити об'єкт для виведення з бази даних.
+     * \brief Creates a database output object.
      *
-     * \return Спільний вказівник на об'єкт, що реалізує інтерфейс IDBOutput.
+     * \return A shared pointer to an object implementing IDBOutput.
      */
     virtual std::shared_ptr<IDBOutput> createOutput() = 0;
 #pragma endregion

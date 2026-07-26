@@ -1,28 +1,27 @@
-#pragma endregion
-
 #include "PostgresOutput.h"
 #include "Logger.h"
+#include <sstream>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 #pragma region Constructor
 PostgresOutput::PostgresOutput() {
-    Logger::getInstance().log("Створено об'єкт PostgresOutput");
+    Logger::getInstance().log("PostgresOutput object created");
     startTime = std::chrono::steady_clock::now();
 }
 #pragma endregion
 
 #pragma region Destructor
 PostgresOutput::~PostgresOutput() {
-    Logger::getInstance().log("Закрито об'єкт PostgresOutput");
-    Logger::getInstance().log("[PostgresConnect] З'єднання закрито.");
-    Logger::getInstance().log("[ApplicationCoordinator] закриття всіх підмодулів.");
+    Logger::getInstance().log("PostgresOutput object destroyed");
 }
 #pragma endregion
 
 #pragma region Methods
 void PostgresOutput::addColumnHeader(const std::string& header) {
     headers.push_back(header);
-    Logger::getInstance().log("Додано заголовок до стовпців: " + header);
+    Logger::getInstance().log("Added column header: " + header);
 }
 
 void PostgresOutput::addRow(const std::vector<std::string>& row) {
@@ -32,22 +31,22 @@ void PostgresOutput::addRow(const std::vector<std::string>& row) {
 void PostgresOutput::clear() {
     headers.clear();
     buffer.clear();
-    Logger::getInstance().log("Очищення");
+    Logger::getInstance().log("Cleared");
 }
 
 void PostgresOutput::writeToFile() {
     std::ofstream outputFile("output.txt");
 
-    // Перевірка на успішне відкриття файлу
+    // Check that the file opened successfully.
     if (!outputFile.is_open()) {
-        Logger::getInstance().log("Не вдалося відкрити файл");
+        Logger::getInstance().log("Failed to open the file");
         return;
     }
 
-    Logger::getInstance().log("Початок запису в файл");
-    Logger::getInstance().log("Заголовків: " + std::to_string(headers.size()) + ", рядків: " + std::to_string(buffer.size()));
+    Logger::getInstance().log("Starting to write to the file");
+    Logger::getInstance().log("Headers: " + std::to_string(headers.size()) + ", rows: " + std::to_string(buffer.size()));
 
-    // Крок 1: Визначення ширини колонок
+    // Step 1: Determine column widths.
     auto visualLength = [](const std::string& str) -> size_t {
         size_t count = 0;
         for (unsigned char c : str) {
@@ -61,7 +60,7 @@ void PostgresOutput::writeToFile() {
         columnWidths[i] = visualLength(headers[i]);
     }
 
-    // Визначення максимальних ширин колонок
+    // Determine the maximum column widths.
     for (const auto& row : buffer) {
         for (size_t i = 0; i < row.size(); ++i) {
             if (i < columnWidths.size())
@@ -71,7 +70,7 @@ void PostgresOutput::writeToFile() {
 
     std::vector<std::string> outputLines;
 
-    // Крок 2: Формування рядка для виведення
+    // Step 2: Build a padded output line.
     auto buildLine = [&](const std::vector<std::string>& items) {
         std::ostringstream oss;
         for (size_t i = 0; i < items.size(); ++i) {
@@ -82,7 +81,7 @@ void PostgresOutput::writeToFile() {
         return oss.str();
     };
 
-    // Додавання заголовків та дефісів
+    // Add the header row and a dashed separator.
     outputLines.push_back(buildLine(headers));
 
     std::vector<std::string> dashes(headers.size());
@@ -90,12 +89,12 @@ void PostgresOutput::writeToFile() {
         dashes[i] = std::string(columnWidths[i], '-');
     outputLines.push_back(buildLine(dashes));
 
-    // Крок 3: Додавання рядків з даними
+    // Step 3: Add the data rows.
     for (const auto& row : buffer) {
         outputLines.push_back(buildLine(row));
     }
 
-    // Крок 4: Визначення максимальної довжини рядка
+    // Step 4: Determine the longest output line.
     size_t maxRowLength = 0;
     for (const auto& line : outputLines) {
         if (line.length() > maxRowLength) {
@@ -103,40 +102,42 @@ void PostgresOutput::writeToFile() {
         }
     }
 
-    // Крок 5: Запис рядків у файл з вирівнюванням
+    // Step 5: Write the aligned lines to the file.
     for (const auto& line : outputLines) {
         outputFile << line << std::string(maxRowLength - line.length(), ' ') << "\n";
     }
 
     outputFile.close();
-    Logger::getInstance().log("Успішно записано в файл");
+    Logger::getInstance().log("Successfully wrote to the file");
 
-    // Крок 6: Відкриття файлу в Notepad, якщо є дані
+    // Step 6: Open the file in Notepad, if there is any data.
     if (!buffer.empty()) {
-        STARTUPINFO si = { sizeof(si) };
+#ifdef _WIN32
+        STARTUPINFOW si = { sizeof(si) };
         PROCESS_INFORMATION pi;
         std::wstring command = L"notepad.exe output.txt";
         if (CreateProcessW(nullptr, &command[0], nullptr, nullptr, FALSE, 0, nullptr, nullptr, &si, &pi)) {
-            Logger::getInstance().log("Відкриття Блокнота");
+            Logger::getInstance().log("Opening Notepad");
             WaitForSingleObject(pi.hProcess, INFINITE);
             CloseHandle(pi.hProcess);
             CloseHandle(pi.hThread);
-            Logger::getInstance().log("Користувач закрив Блокнот");
+            Logger::getInstance().log("User closed Notepad");
         }
         else {
-            Logger::getInstance().log("Не вдалося відкрити Блокнот");
+            Logger::getInstance().log("Failed to open Notepad");
         }
+#endif
     }
     else {
-        Logger::getInstance().log("Не вдалося відкрити Блокнот, немає даних");
+        Logger::getInstance().log("Not opening Notepad, no data");
     }
 
-    // Крок 7: Очищення файлу після перегляду (опційно)
+    // Step 7: Clear the file after viewing (optional).
     bool clearAfterView = false;
     if (clearAfterView) {
         std::ofstream clearFile("output.txt", std::ios::trunc);
         clearFile.close();
-        Logger::getInstance().log("Очищення output.txt");
+        Logger::getInstance().log("Cleared output.txt");
     }
 }
 #pragma endregion

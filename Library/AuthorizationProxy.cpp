@@ -2,17 +2,21 @@
 #include "Logger.h"
 #include <iostream>
 #include <ctime>
+#include <chrono>
+#include <memory>
+#include <thread>
+#include <utility>
 
 #pragma region Constructor
 AuthorizationProxy::AuthorizationProxy(std::shared_ptr<IDBConnect> dbConnect) {
     realAuthorization = std::make_unique<Authorization>(std::move(dbConnect));
-    Logger::getInstance().log("Конструктор AuthorizationProxy: перевірка часовогo доступу.");
+    Logger::getInstance().log("AuthorizationProxy constructor: checking time-based access.");
 }
 #pragma endregion
 
 #pragma region Destructor
 AuthorizationProxy::~AuthorizationProxy() {
-    Logger::getInstance().log("Деструктор ~AuthorizationProxy: очищення ресурсів.");
+    Logger::getInstance().log("~AuthorizationProxy destructor: releasing resources.");
 }
 #pragma endregion
 
@@ -24,15 +28,15 @@ bool AuthorizationProxy::authorize(const std::string& username, const std::strin
 
     if (hour < 7 || hour >= 16) {
         Logger::getInstance().log(
-            "Спроба авторизації поза дозволеним часом (" + std::to_string(hour) + ":00). Доступ заборонено."
+            "Authorization attempt outside the allowed window (" + std::to_string(hour) + ":00). Access denied."
         );
-        std::cerr << "Доступ дозволено лише з 07:00 до 16:00. Поточний час: " << hour << ":00\n";
+        std::cerr << "Access is only allowed between 07:00 and 16:00. Current time: " << hour << ":00\n";
         std::this_thread::sleep_for(std::chrono::seconds(10));
         return false;
     }
 
     Logger::getInstance().log(
-        "Спроба авторизації в дозволений час: " + std::to_string(hour) + ":00."
+        "Authorization attempt within the allowed window: " + std::to_string(hour) + ":00."
     );
     return realAuthorization->authorize(username, password);
 }

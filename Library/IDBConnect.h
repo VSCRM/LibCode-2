@@ -2,36 +2,37 @@
 
 /**
  * \interface IDBConnect
- * \brief Інтерфейс для підключення до бази даних.
+ * \brief Interface for a database connection.
  */
 class  IDBConnect {
 public:
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Забезпечує коректне знищення похідних класів при використанні через вказівник на базовий клас.
+     * Ensures derived classes are destroyed correctly when used through a
+     * pointer to this base class.
      */
     virtual ~IDBConnect() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Встановити підключення до бази даних.
+     * \brief Opens the database connection.
      *
-     * \return true, якщо підключення успішне; інакше — false.
+     * \return true if the connection succeeded; false otherwise.
      */
     virtual bool connect() = 0;
     /**
-     * \brief Закрити підключення до бази даних.
+     * \brief Closes the database connection.
      *
-     * Закриває з'єднання, щоб уникнути витоків ресурсів.
+     * Closes the connection to avoid resource leaks.
      */
     virtual void disconnect() = 0;
     /**
-     * \brief Перевірити статус підключення.
+     * \brief Checks the connection status.
      *
-     * \return true, якщо з'єднання активне; інакше — false.
+     * \return true if the connection is active; false otherwise.
      */
     virtual bool isConnected() const = 0;
 #pragma endregion

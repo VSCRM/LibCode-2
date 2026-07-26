@@ -5,35 +5,38 @@
 
 /**
  * \class ResultAdapter
- * \brief Адаптер для перетворення pqxx::result у PostgresOutput.
+ * \brief Adapter that converts a pqxx::result into a PostgresOutput.
  *
- * Використовується для заповнення буфера PostgresOutput на основі результатів SQL-запиту.
+ * Used to fill a PostgresOutput buffer from the results of an SQL query.
  */
 class ResultAdapter {
 public:
 #pragma region Constructor
     /**
-     * \brief Конструктор за замовчуванням.
+     * \brief Default constructor.
      */
     ResultAdapter() = default;
 #pragma endregion
 
 #pragma region Destructor
     /**
-     * \brief Деструктор.
+     * \brief Destructor.
      *
-     * Виводить повідомлення в лог під час знищення об'єкта.
+     * Logs a message when the object is destroyed.
      */
     ~ResultAdapter();
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Перетворює результат SQL-запиту на об'єкт PostgresOutput.
+     * \brief Converts an SQL query result into a PostgresOutput object.
      *
-     * \param result Результат SQL-запиту (pqxx::result).
-     * \return Посилання на об'єкт PostgresOutput з відформатованими даними.
+     * \param result The SQL query result (pqxx::result).
+     * \return A new PostgresOutput with the formatted data. Each call
+     *         returns its own, isolated object (instead of a reference to
+     *         a shared static buffer), which is safe for repeated and
+     *         concurrent use.
      */
-    static PostgresOutput& convert(const pqxx::result& result);
+    static PostgresOutput convert(const pqxx::result& result);
 #pragma endregion
 };

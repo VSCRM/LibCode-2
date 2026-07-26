@@ -1,34 +1,39 @@
 #pragma once
 
 #include "IMenu.h"
+#include <memory>
 #include <string>
 
 /**
  * \interface IMenuCreator
- * \brief Інтерфейс фабрики меню.
+ * \brief Interface for a menu factory.
  *
- * Визначає метод створення об'єкта меню відповідно до ролі користувача.
+ * Defines the method used to create a menu object matching a user role.
  */
 class IMenuCreator {
 public:
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Забезпечує коректне знищення об'єктів похідних класів через вказівник на базовий клас.
+     * Ensures derived-class objects are destroyed correctly through a
+     * pointer to this interface.
      */
     virtual ~IMenuCreator() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Створює об'єкт меню для конкретної ролі користувача.
+     * \brief Creates the menu object for a given user role.
      *
-     * Це фабричний метод, який реалізується для створення меню, що відповідає ролі користувача (наприклад, адміністратор або бібліотекар).
+     * This is the factory method implemented to build the menu matching a
+     * user's role (e.g. admin or librarian).
      *
-     * \param role Роль користувача (наприклад, "admin" або "librarian").
-     * \return Вказівник на об'єкт меню, що відповідає ролі.
+     * \param role User role (e.g. "admin" or "librarian").
+     * \return A smart pointer to the menu matching the role, or nullptr if
+     *         the role is unknown. std::unique_ptr guarantees automatic
+     *         cleanup and prevents resource leaks in the calling code.
      */
-    virtual IMenu* createMenu(const std::string& role) const = 0;
+    virtual std::unique_ptr<IMenu> createMenu(const std::string& role) const = 0;
 #pragma endregion
 };

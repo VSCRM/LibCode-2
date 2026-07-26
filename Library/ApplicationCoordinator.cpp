@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 #pragma region Constructor
 ApplicationCoordinator::ApplicationCoordinator(
@@ -17,12 +18,12 @@ ApplicationCoordinator::ApplicationCoordinator(
 
 #pragma region Destructor
 ApplicationCoordinator::~ApplicationCoordinator() {
-    Logger::getInstance().log("Деструктор ApplicationCoordinator: очищення ресурсів.");
+    Logger::getInstance().log("ApplicationCoordinator destructor: releasing resources.");
    
     if (dbConnect) {
         dbConnect->disconnect();
         dbConnect.reset();
-        Logger::getInstance().log("DB-з'єднання очищено в ApplicationCoordinator.");
+        Logger::getInstance().log("DB connection released in ApplicationCoordinator.");
     }
     authorization.reset();
     userContext.reset();
@@ -30,7 +31,7 @@ ApplicationCoordinator::~ApplicationCoordinator() {
     dbFactory.reset();
     consoleUtils.reset();
 
-    Logger::getInstance().log("Всі сервіси обнулено в ApplicationCoordinator.");
+    Logger::getInstance().log("All services reset in ApplicationCoordinator.");
 }
 #pragma endregion
 
@@ -45,21 +46,39 @@ void ApplicationCoordinator::initialize() {
     dbConnect = dbFactory->createConnection();
 
     if (!dbConnect->connect()) {
-        std::cerr << "Неможливо підключитися до бази даних." << std::endl;
+        std::cerr << "Unable to connect to the database." << std::endl;
         return;
     }
-    while (true) {
-        handleAuthorization();
+    while (handleAuthorization()) {
+        // Keep showing the login window until the user asks to exit.
     }
 }
 
-void ApplicationCoordinator::handleAuthorization() {
+bool ApplicationCoordinator::handleAuthorization() {
     bool isAuthorized = false;
     std::string username;
     std::string password;
 
     while (!isAuthorized) {
-        auto [login, pass] = consoleUtils->showLoginWindow();
+        bool exitRequested = false;
+        auto [login, pass] = consoleUtils->showLoginWindow(exitRequested);
+        if (exitRequested) {
+            // The user asked to exit the application: return control so the
+            // stack unwinds normally and all destructors (including the DB
+            // disconnect) run correctly.
+            return false;
+        }
+
+        // Reject empty login/password before hitting the database at all;
+        // previously an empty submission was sent straight to authorize(),
+        // which meant an unnecessary round trip and no clear feedback for
+        // the "nothing typed" case.
+        if (login.empty() || pass.empty()) {
+            std::cerr << "Login and password must not be empty." << std::endl;
+            clearConsole();
+            continue;
+        }
+
         username = login;
         password = pass;
 
@@ -75,11 +94,12 @@ void ApplicationCoordinator::handleAuthorization() {
 
     displayMenu();
     clearConsole();
+    return true;
 }
 
 bool ApplicationCoordinator::displayMenu() {
     std::string role = userContext->getRole();
-    IMenu* menu = menuCreator->createMenu(role);
+    std::unique_ptr<IMenu> menu = menuCreator->createMenu(role);
 
     if (menu != nullptr) {
         bool continueSession = true;
@@ -100,6 +120,10 @@ bool ApplicationCoordinator::displayMenu() {
 }
 
 void ApplicationCoordinator::clearConsole() {
+#ifdef _WIN32
     system("cls");
+#else
+    system("clear");
+#endif
 }
 #pragma endregion

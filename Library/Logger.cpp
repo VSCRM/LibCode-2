@@ -1,5 +1,7 @@
 #include "Logger.h"
 #include <chrono>
+#include <ctime>
+#include <iomanip>
 
 #pragma region Constructor
 Logger::Logger() {

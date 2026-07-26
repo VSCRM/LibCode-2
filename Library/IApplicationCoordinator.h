@@ -2,38 +2,42 @@
 
 /**
  * \interface IApplicationCoordinator
- * \brief Інтерфейс координатора додатку.
+ * \brief Interface for the application coordinator.
  *
- * Керує запуском системи, авторизацією користувачів та навігацією між меню.
+ * Manages application startup, user authorization, and navigation between
+ * menus.
  */
 class IApplicationCoordinator {
 public:
 #pragma region Destructor
     /**
-     * \brief Віртуальний деструктор.
+     * \brief Virtual destructor.
      *
-     * Забезпечує коректне знищення об'єктів похідних класів.
+     * Ensures derived-class objects are destroyed correctly.
      */
     virtual ~IApplicationCoordinator() = default;
 #pragma endregion
 
 #pragma region Methods
     /**
-     * \brief Ініціалізує програму.
+     * \brief Initializes the application.
      *
-     * Запускає основну логіку додатку, включаючи авторизацію користувача.
+     * Runs the application's main logic, including user authorization.
      */
     virtual void initialize() = 0;
     /**
-     * \brief Керує процесом авторизації користувача.
+     * \brief Drives the user authorization process.
      *
-     * Якщо авторизація успішна, створює меню згідно з роллю користувача.
+     * If authorization succeeds, creates the menu matching the user's role.
+     *
+     * \return true if the application should keep running (show the login
+     *         window again); false if the user asked to exit.
      */
-    virtual void handleAuthorization() = 0;
+    virtual bool handleAuthorization() = 0;
     /**
-     * \brief Показує меню користувача після авторизації.
+     * \brief Shows the user's menu after authorization.
      *
-     * \return true, якщо меню було успішно показано; інакше — false.
+     * \return true if the menu was shown successfully; false otherwise.
      */
     virtual bool displayMenu() = 0;
 #pragma endregion
