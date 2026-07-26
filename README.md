@@ -144,6 +144,60 @@ cd vcpkg
 
 ---
 
+## 🗂 Структура проєкту
+
+```
+Курсова 2/
+│
+├── database/
+│   ├── library.dump                     # бінарний дамп БД (pg_restore)
+│   └── library.sql                      # SQL-дамп БД (текстовий, для psql)
+│
+├── Library/                             # вихідний код застосунку (C++)
+│   ├── AdminMenu.cpp / .h               # меню адміністратора
+│   ├── ApplicationCoordinator.cpp / .h  # Facade — координація застосунку
+│   ├── Authorization.cpp / .h           # авторизація (запит до users у БД)
+│   ├── AuthorizationProxy.cpp / .h      # Proxy — обмеження часу входу 07:00–16:00
+│   ├── ConsoleUtils.cpp / .h            # консольний UI (FTXUI): форми, меню
+│   ├── ConsoleUtilsDecorator.cpp / .h   # Decorator — стилізація/кольори виводу
+│   ├── ExtendFeatures.cpp / .h          # логіка адмін-функцій (бібліотеки, бібліотекарі, addUser)
+│   ├── IAddOperations.h                 # інтерфейс операцій додавання
+│   ├── IApplicationCoordinator.h        # інтерфейс координатора застосунку
+│   ├── IAuthorization.h                 # інтерфейс авторизації
+│   ├── IBaseOperations.h                # інтерфейс базових операцій читання
+│   ├── IConsoleUtils.h                  # інтерфейс консольного UI
+│   ├── IDBConnect.h                     # інтерфейс підключення до БД
+│   ├── IDBFactory.h                     # інтерфейс Abstract Factory для БД
+│   ├── IDBOutput.h                      # інтерфейс форматування/виводу результатів
+│   ├── IMenu.h                          # інтерфейс меню (пункти + обробка вибору)
+│   ├── IMenuCreator.h                   # інтерфейс Factory Method для меню
+│   ├── IUserContext.h                   # інтерфейс контексту поточного користувача
+│   ├── LibrarianMenu.cpp / .h           # меню бібліотекаря
+│   ├── Library.vcxproj                  # проєкт Visual Studio (MSBuild)
+│   ├── Library.vcxproj.filters          # групування файлів у Solution Explorer
+│   ├── Library.vcxproj.user             # локальні (не git) налаштування запуску VS
+│   ├── log.txt                          # журнал подій застосунку (генерується під час роботи)
+│   ├── Logger.cpp / .h                  # Singleton — журналювання дій
+│   ├── main.cpp                         # точка входу (entry point)
+│   ├── MainFeatures.cpp / .h            # логіка функцій бібліотекаря (книги, читачі, візити)
+│   ├── MenuCreator.cpp / .h             # Factory Method — створення меню за роллю
+│   ├── PostgresConnect.cpp / .h         # обгортка з'єднання pqxx::connection
+│   ├── PostgresFactory.h                # Abstract Factory — фабрика PostgreSQL-об'єктів
+│   ├── PostgresOutput.cpp / .h          # форматування та запис результатів у output.txt
+│   ├── ResultAdapter.cpp / .h           # Adapter — pqxx::result → PostgresOutput
+│   └── UserContext.h                    # зберігає логін/роль поточного користувача
+│
+├── .gitattributes                       # налаштування git (line endings тощо)
+├── .gitignore                           # ігноровані git файли/папки
+├── 2.png                                # Use-Case діаграма проєкту
+├── Запити.txt                           # чернетка SQL-запитів, використаних у роботі
+├── Курсова 2.sln                        # файл рішення Visual Studio (відкриває весь проєкт)
+├── LICENSE.txt                          # текст ліцензії MIT
+└── README.md                            # цей файл
+```
+
+---
+
 ## 📝 Функціонал
 
 ### 👤 Бібліотекар
@@ -194,14 +248,14 @@ cd vcpkg
 
 > ⚠️ **Важливо:** застосунок — не один файл. `Library.exe` динамічно лінкується з бібліотеками `libpqxx` і `PostgreSQL`, тож для запуску потрібні **всі файли разом**, з тієї самої папки `x64/Release`:
 >
-> | Файл                  | Призначення                                  |
-> | ---------------------- | --------------------------------------------- |
-> | `Library.exe`           | сам застосунок                                |
-> | `pqxx.dll`               | обгортка libpqxx для роботи з PostgreSQL      |
-> | `LIBPQ.dll`             | клієнтська бібліотека PostgreSQL (libpq)      |
-> | `libssl-3-x64.dll`     | OpenSSL — шифрування з'єднання до БД          |
-> | `libcrypto-3-x64.dll` | OpenSSL — криптографічні примітиви            |
-> | `Library.pdb`           | символи налагодження (необов'язковий, для дебагу) |
+> | Файл                  | Призначення                                       |
+> | --------------------- | ------------------------------------------------- |
+> | `Library.exe`         | сам застосунок                                    |
+> | `pqxx.dll`            | обгортка libpqxx для роботи з PostgreSQL          |
+> | `LIBPQ.dll`           | клієнтська бібліотека PostgreSQL (libpq)          |
+> | `libssl-3-x64.dll`    | OpenSSL — шифрування з'єднання до БД              |
+> | `libcrypto-3-x64.dll` | OpenSSL — криптографічні примітиви                |
+> | `Library.pdb`         | символи налагодження (необов'язковий, для дебагу) |
 >
 > Завантаж **усі** файли з релізу в одну папку — без `.dll` застосунок не запуститься (Windows видасть помилку про відсутню бібліотеку).
 
@@ -215,8 +269,8 @@ cd vcpkg
 
 ## 👨‍💻 Автор
 
-:white_check_mark: 👤 Кручкевич Богдан Вікторович
+[Кручкевич Богдан Вікторович](https://github.com/VSCRM)
 
 ## 📜 Ліцензія
 
-:white_check_mark: Цей проєкт ліцензовано під MIT License. Детальніше дивіться у файлі `LICENSE`.
+Цей проєкт ліцензовано під MIT License. Детальніше дивіться у файлі [`LICENSE`](./LICENSE.txt).
