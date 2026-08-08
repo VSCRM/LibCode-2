@@ -114,6 +114,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files\Functional</Filter>
     </ClCompile>
+    <ClCompile Include="EnvConfig.cpp">
+      <Filter>Source Files\Functional</Filter>
+    </ClCompile>
     <ClCompile Include="IConsoleUtils.h">
       <Filter>Header Files\Interface\Functional</Filter>
     </ClCompile>
@@ -162,6 +165,9 @@
       <Filter>Header Files\Simple Header\Functional realization</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleUtils.h">
+      <Filter>Header Files\Simple Header\Functional realization</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvConfig.h">
       <Filter>Header Files\Simple Header\Functional realization</Filter>
     </ClInclude>
     <ClInclude Include="IAuthorization.h">
