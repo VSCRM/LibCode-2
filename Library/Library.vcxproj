@@ -25,6 +25,7 @@
     <ClCompile Include="AuthorizationProxy.cpp" />
     <ClCompile Include="ConsoleUtils.cpp" />
     <ClCompile Include="ConsoleUtilsDecorator.cpp" />
+    <ClCompile Include="EnvConfig.cpp" />
     <ClCompile Include="ExtendFeatures.cpp" />
     <ClCompile Include="IConsoleUtils.h" />
     <ClCompile Include="LibrarianMenu.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="AuthorizationProxy.h" />
     <ClInclude Include="ConsoleUtils.h" />
     <ClInclude Include="ConsoleUtilsDecorator.h" />
+    <ClInclude Include="EnvConfig.h" />
     <ClInclude Include="ExtendFeatures.h" />
     <ClInclude Include="IAddOperations.h" />
     <ClInclude Include="IApplicationCoordinator.h" />
