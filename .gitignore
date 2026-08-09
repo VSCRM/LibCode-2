@@ -34,3 +34,5 @@ Library/.env
 *.pdb
 *.ilk
 *.exe
+Library/log.txt
+Library/output.txt
