@@ -194,53 +194,98 @@ cd vcpkg
 Курсова 2/
 │
 ├── database/
-│   ├── library.dump                     # бінарний дамп БД (pg_restore)
-│   └── library.sql                      # SQL-дамп БД (текстовий, для psql)
+│   ├── library.dump                             # бінарний дамп БД (pg_restore)
+│   └── library.sql                              # SQL-дамп БД (текстовий, для psql)
 │
-├── Library/                             # вихідний код застосунку (C++)
-│   ├── .env.example                     # приклад файлу з DB_* змінними (без реальних даних)
-│   ├── AdminMenu.cpp / .h               # меню адміністратора
-│   ├── ApplicationCoordinator.cpp / .h  # Facade — координація застосунку
-│   ├── Authorization.cpp / .h           # авторизація (запит до users у БД)
-│   ├── AuthorizationProxy.cpp / .h      # Proxy — обмеження часу входу 07:00–16:00
-│   ├── ConsoleUtils.cpp / .h            # консольний UI (FTXUI): форми, меню
-│   ├── ConsoleUtilsDecorator.cpp / .h   # Decorator — стилізація/кольори виводу
-│   ├── EnvConfig.cpp / .h               # читання логіна/пароля БД з .env / змінних середовища
-│   ├── ExtendFeatures.cpp / .h          # логіка адмін-функцій (бібліотеки, бібліотекарі, addUser)
-│   ├── IAddOperations.h                 # інтерфейс операцій додавання
-│   ├── IApplicationCoordinator.h        # інтерфейс координатора застосунку
-│   ├── IAuthorization.h                 # інтерфейс авторизації
-│   ├── IBaseOperations.h                # інтерфейс базових операцій читання
-│   ├── IConsoleUtils.h                  # інтерфейс консольного UI
-│   ├── IDBConnect.h                     # інтерфейс підключення до БД
-│   ├── IDBFactory.h                     # інтерфейс Abstract Factory для БД
-│   ├── IDBOutput.h                      # інтерфейс форматування/виводу результатів
-│   ├── IMenu.h                          # інтерфейс меню (пункти + обробка вибору)
-│   ├── IMenuCreator.h                   # інтерфейс Factory Method для меню
-│   ├── IUserContext.h                   # інтерфейс контексту поточного користувача
-│   ├── LibrarianMenu.cpp / .h           # меню бібліотекаря
-│   ├── Library.vcxproj                  # проєкт Visual Studio (MSBuild)
-│   ├── Library.vcxproj.filters          # групування файлів у Solution Explorer
-│   ├── Library.vcxproj.user             # локальні (не git) налаштування запуску VS
-│   ├── log.txt                          # журнал подій застосунку (генерується під час роботи)
-│   ├── Logger.cpp / .h                  # Singleton — журналювання дій
-│   ├── main.cpp                         # точка входу (entry point)
-│   ├── MainFeatures.cpp / .h            # логіка функцій бібліотекаря (книги, читачі, візити)
-│   ├── MenuCreator.cpp / .h             # Factory Method — створення меню за роллю
-│   ├── PostgresConnect.cpp / .h         # обгортка з'єднання pqxx::connection
-│   ├── PostgresFactory.h                # Abstract Factory — фабрика PostgreSQL-об'єктів
-│   ├── PostgresOutput.cpp / .h          # форматування та запис результатів у output.txt
-│   ├── ResultAdapter.cpp / .h           # Adapter — pqxx::result → PostgresOutput
-│   └── UserContext.h                    # зберігає логін/роль поточного користувача
+├── Library/                                     # вихідний код застосунку (C++)
+│   │
+│   ├── Source Files/                            # реалізація (.cpp)
+│   │   ├── Abstract Factory/
+│   │   │   ├── PostgresConnect.cpp              # обгортка з'єднання pqxx::connection
+│   │   │   └── PostgresOutput.cpp               # форматування та запис результатів у output.txt
+│   │   ├── Adapter/
+│   │   │   └── ResultAdapter.cpp                # Adapter — pqxx::result → PostgresOutput
+│   │   ├── Decorator/
+│   │   │   └── ConsoleUtilsDecorator.cpp        # Decorator — стилізація/кольори виводу
+│   │   ├── Facade Method/
+│   │   │   └── ApplicationCoordinator.cpp       # Facade — координація застосунку
+│   │   ├── Factory Method/
+│   │   │   ├── AdminMenu.cpp                    # меню адміністратора
+│   │   │   ├── LibrarianMenu.cpp                # меню бібліотекаря
+│   │   │   └── MenuCreator.cpp                  # Factory Method — створення меню за роллю
+│   │   ├── Functional/
+│   │   │   ├── Authorization.cpp                # авторизація (запит до users у БД)
+│   │   │   ├── ConsoleUtils.cpp                 # консольний UI (FTXUI): форми, меню
+│   │   │   ├── EnvConfig.cpp                    # читання логіна/пароля БД з .env / змінних середовища
+│   │   │   ├── ExtendFeatures.cpp               # логіка адмін-функцій (бібліотеки, бібліотекарі, addUser)
+│   │   │   ├── main.cpp                         # точка входу (entry point)
+│   │   │   └── MainFeatures.cpp                 # логіка функцій бібліотекаря (книги, читачі, візити)
+│   │   ├── Proxy/
+│   │   │   └── AuthorizationProxy.cpp           # Proxy — обмеження часу входу 07:00–16:00
+│   │   └── Singleton/
+│   │       └── Logger.cpp                       # Singleton — журналювання дій
+│   │
+│   ├── Header Files/                            # заголовки (.h)
+│   │   ├── Interface/                           # абстрактні інтерфейси патернів
+│   │   │   ├── Abstract Factory/
+│   │   │   │   ├── IDBConnect.h
+│   │   │   │   ├── IDBFactory.h
+│   │   │   │   └── IDBOutput.h
+│   │   │   ├── Facade/
+│   │   │   │   └── IApplicationCoordinator.h
+│   │   │   ├── Factory Method/
+│   │   │   │   ├── IMenu.h
+│   │   │   │   └── IMenuCreator.h
+│   │   │   └── Functional/
+│   │   │       ├── IAddOperations.h
+│   │   │       ├── IAuthorization.h
+│   │   │       ├── IBaseOperations.h
+│   │   │       ├── IConsoleUtils.h
+│   │   │       └── IUserContext.h
+│   │   └── Simple Header/                       # реалізації-заголовки патернів
+│   │       ├── Abstract Factory realization/
+│   │       │   ├── PostgresConnect.h
+│   │       │   ├── PostgresFactory.h
+│   │       │   └── PostgresOutput.h
+│   │       ├── Adapter/
+│   │       │   └── ResultAdapter.h
+│   │       ├── Decorator realization/
+│   │       │   └── ConsoleUtilsDecorator.h
+│   │       ├── Facade Method realization/
+│   │       │   └── ApplicationCoordinator.h
+│   │       ├── Factory Method realization/
+│   │       │   ├── AdminMenu.h
+│   │       │   ├── LibrarianMenu.h
+│   │       │   └── MenuCreator.h
+│   │       ├── Functional realization/
+│   │       │   ├── Authorization.h
+│   │       │   ├── ConsoleUtils.h
+│   │       │   ├── EnvConfig.h
+│   │       │   ├── ExtendFeatures.h
+│   │       │   ├── MainFeatures.h
+│   │       │   └── UserContext.h
+│   │       ├── Proxy realization/
+│   │       │   └── AuthorizationProxy.h
+│   │       └── Singleton method realization/
+│   │           └── Logger.h
+│   │
+│   ├── .env.example                             # приклад файлу з DB_* змінними (без реальних даних)
+│   ├── Library.vcxproj                          # проєкт Visual Studio (MSBuild)
+│   ├── Library.vcxproj.filters                  # групування файлів у Solution Explorer
+│   └── Library.vcxproj.user                     # локальні (не git) налаштування запуску VS
 │
-├── .gitattributes                       # налаштування git (line endings тощо)
-├── .gitignore                           # ігноровані git файли/папки
-├── 2.png                                # Use-Case діаграма проєкту
-├── Запити.txt                           # чернетка SQL-запитів, використаних у роботі
-├── Курсова 2.sln                        # файл рішення Visual Studio (відкриває весь проєкт)
-├── LICENSE.txt                          # текст ліцензії MIT
-└── README.md                            # цей файл
+├── .gitattributes                               # налаштування git (line endings тощо)
+├── .gitignore                                   # ігноровані git файли/папки
+├── 2.png                                        # Use-Case діаграма проєкту
+├── Запити.txt                                   # чернетка SQL-запитів, використаних у роботі
+├── Курсова 2.sln                                # файл рішення Visual Studio (відкриває весь проєкт)
+├── LICENSE.txt                                  # текст ліцензії MIT
+└── README.md                                    # цей файл
 ```
+
+> 💡 `Source Files/` та `Header Files/` — це не реальні папки на диску (усі `.cpp`/`.h` фізично лежать прямо в `Library/`), а логічне групування, яке Visual Studio показує в Solution Explorer згідно з `Library.vcxproj.filters`.
+>
+> ⚠️ Файли `log.txt` та `output.txt` під час роботи застосунку створюються поруч з `.exe` (у тому числі в `Library/` при запуску з Visual Studio), але **не входять до репозиторію** — вони в `.gitignore`.
 
 ---
 
